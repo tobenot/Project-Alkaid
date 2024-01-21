@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "docker-build",
+        "type": "shell",
+        "command": "docker",
+        "args": [
+          "build",
+          "-t",
+          "project-alkaid-docker",
+          "."
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
+  
