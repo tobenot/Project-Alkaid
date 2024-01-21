@@ -1,21 +1,34 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "docker-build",
-        "type": "shell",
-        "command": "docker",
-        "args": [
-          "build",
-          "-t",
-          "project-alkaid-docker",
-          "."
-        ],
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        }
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "docker-build",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "build",
+        "-t",
+        "project-alkaid-docker",
+        "."
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
-    ]
-  }
-  
+    },
+    {
+      "label": "docker-run",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "run",
+        "-it",
+        "project-alkaid-docker"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+  ]
+}
