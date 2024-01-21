@@ -10,5 +10,8 @@ COPY . .
 # 安装程序所需的依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
+# 设置环境变量，使 Python 以交互模式运行
+ENV PYTHONUNBUFFERED 1
+
 # 运行你的Python程序
-CMD ["python", "HelloWorld.py"]
+CMD python llm/OpenAIChatExp.py
