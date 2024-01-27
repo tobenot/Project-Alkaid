@@ -68,47 +68,47 @@ def write_error_to_log(error_message):
 
 if __name__ == "__main__":
     try:
-# 创建ChatWithOpenAI实例
-chat_instance = ChatWithOpenAI()  
+        # 创建ChatWithOpenAI实例
+        chat_instance = ChatWithOpenAI()  
 
-# 输出欢迎图案
-print(welcome_art)
+        # 输出欢迎图案
+        print(welcome_art)
 
-# 输出用户提示
-user_prompt = "You can ask me anything, or type 'exit' to end the conversation."
-print(user_prompt)
+        # 输出用户提示
+        user_prompt = "You can ask me anything, or type 'exit' to end the conversation."
+        print(user_prompt)
 
 
-# 设置文件名为当前时间
-current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-directory = "saved/chatHistory"
-os.makedirs(directory, exist_ok=True)
-file_path = os.path.join(directory, f"chat_history_{current_time}.txt")
+        # 设置文件名为当前时间
+        current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        directory = "saved/chatHistory"
+        os.makedirs(directory, exist_ok=True)
+        file_path = os.path.join(directory, f"chat_history_{current_time}.txt")
 
-while True:
-    # 获取用户输入
-    user_input = input("User: ")
+        while True:
+            # 获取用户输入
+            user_input = input("User: ")
 
-    # 如果用户输入"exit"，退出循环
-    if user_input.lower() == "exit":
-        print(f"Chat history saved to {file_path}")
-        break
+            # 如果用户输入"exit"，退出循环
+            if user_input.lower() == "exit":
+                print(f"Chat history saved to {file_path}")
+                break
 
-    # 将用户输入添加到对话历史
-    chat_instance.add_user_message(user_input)
+            # 将用户输入添加到对话历史
+            chat_instance.add_user_message(user_input)
 
-    # 保存最新一句对话历史到文件
-    chat_instance.save_chat_to_file(file_path)
+            # 保存最新一句对话历史到文件
+            chat_instance.save_chat_to_file(file_path)
 
-    # 获取助手回复
-    assistant_reply = chat_instance.get_assistant_reply()
+            # 获取助手回复
+            assistant_reply = chat_instance.get_assistant_reply()
 
-    # 打印助手回复
-    print("Assistant:", assistant_reply)
+            # 打印助手回复
+            print("Assistant:", assistant_reply)
 
-    # 保存最新一句对话历史到文件
-    chat_instance.save_chat_to_file(file_path)
-            
+            # 保存最新一句对话历史到文件
+            chat_instance.save_chat_to_file(file_path)
+                    
     except Exception as e:
         # 捕获整个程序的异常
         error_message = f"An unexpected error occurred: {str(e)}"
