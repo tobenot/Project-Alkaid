@@ -20,6 +20,7 @@ import httpx
 from openai import OpenAI
 from OpenAISetting import OPENAI_API_BASE, OPENAI_API_KEY
 import json
+from sympy import sympify, simplify
 
 class ChatWithOpenAI:
     def __init__(self):
@@ -38,49 +39,39 @@ class ChatWithOpenAI:
             "type": "function",
             "function": {
                 "name": "calculator",
-                "description": "Perform a calculation using a simple single-step calculator function.",
+                "description": "Evaluate a mathematical expression.",
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "operation": {"type": "string", "enum": ["add", "subtract", "multiply", "divide"]},
-                        "operand1": {"type": "number"},
-                        "operand2": {"type": "number"},
+                        "expression": {"type": "string"},
                     },
-                    "required": ["operation", "operand1", "operand2"],
+                    "required": ["expression"],
                 },
             },
         }
         
     # 计算器Function
-    def function_call_calculator(self, operation, operand1, operand2):
+    def function_call_calculator(self, expression):
         """
-        Simple calculator function. Single-step computation is supported only.
+        Mathematical expression calculator function.
 
         Parameters:
-        - operation (str): The operation to perform ('add', 'subtract', 'multiply', 'divide').
-        - operand1 (float): The first operand.
-        - operand2 (float): The second operand.
+        - expression (str): The mathematical expression to be evaluated.
 
         Returns:
         - tuple: (result, error_message)
-        - result (float): The result of the specified operation on the operands.
+        - result (float): The result of the evaluated expression.
         - error_message (str): Error message if an error occurs, else an empty string.
         """
         result = 0.0
         error_message = ""
 
-        if operation == 'add':
-            result = operand1 + operand2
-        elif operation == 'subtract':
-            result = operand1 - operand2
-        elif operation == 'multiply':
-            result = operand1 * operand2
-        elif operation == 'divide':
-            if operand2 != 0:
-                result = operand1 / operand2
-            else:
-                result = 0
-                error_message = "Error: Division by zero is not allowed."
+        try:
+            # Use sympify to parse and simplify the expression
+            parsed_expression = sympify(expression)
+            result = float(simplify(parsed_expression))
+        except Exception as e:
+            error_message = f"Error: {str(e)}"
 
         return result, error_message
 
@@ -144,14 +135,13 @@ class ChatWithOpenAI:
                 })
 
     def handle_calculator_function(self, arguments):
-        # 在这里，你可以编写处理 calculator 函数的逻辑
-        operation = arguments.get("operation")
-        operand1 = arguments.get("operand1")
-        operand2 = arguments.get("operand2")
+        # Extract the expression from the arguments
+        expression = arguments.get("expression")
 
-        # 执行计算逻辑，并处理结果
-        result, error_message = self.function_call_calculator(operation, operand1, operand2)
-        print(json.dumps({"result": result}))
+        # Execute the calculation logic and handle the result
+        result, error_message = self.function_call_calculator(expression)
+
+        # Return the result as a JSON-formatted string
         return json.dumps({"result": result})
     
     def save_chat_to_file(self, file_path):
