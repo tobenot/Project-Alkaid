@@ -46,9 +46,21 @@ class OpenAIEmbedSearch:
             model = self.model_name,
             input = sentence
         ).data[0].embedding
-        similarities = [1 - cosine(query_embedding, embed[1]) for embed in self.embeddings]
-        index = np.argmax(similarities)
+        similarities = []
 
+        for idx, embed in enumerate(self.embeddings):
+            similarity = 1 - cosine(query_embedding, embed[1])
+            similarities.append((idx, embed[0], similarity))
+
+        # 将相似度列表按相似度从高到低排序
+        similarities.sort(key=lambda x: x[2], reverse=True)
+
+        # 输出排序后的列表
+        for similarity in similarities:
+            print(f"Embedding {similarity[0]+1}, Sentence: \"{similarity[1]}\", Similarity: {similarity[2]}")
+
+        # 返回相似度最高的句子
+        index = similarities[0][0]
         return self.embeddings[index]
 
 if __name__ == "__main__":
