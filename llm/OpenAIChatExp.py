@@ -30,7 +30,7 @@ class ChatWithOpenAI:
 
     def get_assistant_reply(self):
         response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=self.messages
         )
         # Extract the assistant's reply
