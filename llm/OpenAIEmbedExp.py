@@ -28,7 +28,8 @@ class ChatWithOpenAI:
 
     def get_assistant_reply_object(self, user_input):
         response = self.client.embeddings.create(
-            model = "text-embedding-ada-002",
+            # model = "text-embedding-3-large",
+            model = "text-embedding-3-small",
             input= user_input
         )
         # Extract the assistant's reply and other fields
